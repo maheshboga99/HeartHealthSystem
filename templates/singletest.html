@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container p-5">
+  <h1>Dear User please fill the below form and get your report generated. </h1>
+  
+  <div class="row p-3">
+
+   
+    <div class="col-md-6 pt-2">
+    
+      <div class="card text-white bg-primary mb-6" style="max-width: 50rem;">
+        <div class="card-header"> <strong> Your Result</strong> </div>
+        <div class="card-body">
+           <h4> 
+            <strong>
+            {% if result %}  
+              {% if result[1] == 0 %}
+                <span class="fa fa-check-circle"></span> 
+                {{ result[0] }}  </strong>  </h4> 
+                <p> Celebrate its a good news. </p>
+
+              {% elif result[1] == 2 %}
+                <span class="fa fa-exclamation-triangle"></span> 
+                {{ result[0] }}  </strong>  </h4> 
+                <p> To get an idea of what data you need to fill read the informative content given below. </p>
+              {% else %}
+                <span class="fa fa-heartbeat"></span> 
+                {{ result[0] }}  </strong>  </h4> 
+                <p> Get well soon. </p>
+              {% endif %}
+
+            {% else %}
+              Fill the form. <span class="fa fa-hand-o-right"></span>
+                </strong>  </h4> 
+              <p> <span class="fa fa-hand-o-down"></span> Carefully Read Information given below. </p>
+            {% endif %}
+            
+            
+           
+             
+         
+        </div>
+      </div>
+
+      <hr>
+  {% if details %}
+
+
+   
+    <h3> Your Submitted Details </h3>
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <!-- <th scope="col">SR.No.</th> -->
+          <th scope="col"> Attribute </th>
+          <th scope="col"> Value </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ele, val in details.items() %}
+          
+        <tr class="table-primary">
+          <!-- <th scope="row">   </th> -->
+          <td> {{ ele }} </td>
+          <td>{{ val }}</td>
+          
+        </tr>
+          <!-- <li>{{ ele , val  }}</li> -->
+        {% endfor %}
+      </tbody>
+    </table> 
+
+  {% else %}
+        
+        <div class="card border-primary mb-3" style="max-width: 50rem;">
+          <div class="card-header"> Read Me </div>
+          <div class="card-body">
+            <h4 class="card-title"> Information you should know. </h4>
+            <p class="card-text"> Here's what the form data mean, </p>
+            <p> 
+              <li class="list-group-item list-group-item-action"> <strong> Age: </strong>  The person's age in years. </li>
+              <li class="list-group-item list-group-item-action"> <strong> Sex: </strong>  The person's sex (1 = male, 0 = female). </li>
+              <li class="list-group-item list-group-item-action"> <strong> Chest_pain_type: </strong>  The chest pain experienced (Value 1: typical angina, Value 2: atypical angina, Value 3: non-anginal pain, Value 4: asymptomatic). </li>
+              <li class="list-group-item list-group-item-action"> <strong> Resting_blood_pressure: </strong>  The person's resting blood pressure (mm Hg on admission to the hospital). </li>
+              <li class="list-group-item list-group-item-action"> <strong> Cholesterol: </strong>  The person's cholesterol measurement in mg/dl. </li>
+              <li class="list-group-item list-group-item-action"> <strong> Fasting_blood_sugar: </strong>  The person's fasting blood sugar (> 120 mg/dl, 1 = true; 0 = false). </li>
+              <li class="list-group-item list-group-item-action"> <strong> Rest_ecg: </strong>  Resting electrocardiographic measurement (0 = normal, 1 = having ST-T wave abnormality, 2 = showing probable or definite left ventricular hypertrophy by Estes' criteria). </li>
+              <li class="list-group-item list-group-item-action"> <strong> Max_heart_rate_achieved: </strong>  The person's maximum heart rate achieved. </li>
+              <li class="list-group-item list-group-item-action"> <strong> Exercise_induced_angina: </strong>  Exercise induced angina (1 = yes; 0 = no). </li>
+              <li class="list-group-item list-group-item-action"> <strong> St_depression: </strong>  ST depression induced by exercise relative to rest ('ST' relates to positions on the ECG plot. See more here). </li>
+              <li class="list-group-item list-group-item-action"> <strong> St_slope: </strong>  The slope of the peak exercise ST segment (Value 1: upsloping, Value 2: flat, Value 3: downsloping). </li>
+              <li class="list-group-item list-group-item-action"> <strong> Num_major_vessels: </strong>  The number of major vessels (0-4). </li>
+              <li class="list-group-item list-group-item-action"> <strong> Thalassemia: </strong>  A blood disorder called thalassemia (normal; fixed defect; reversable defect). </li>
+             </p>
+          </div>
+        </div>
+  {% endif %}
+  </div>
+
+  <div class="col-md-6  pt-2">
+
+    <form  action="/singleReport" method="POST">
+    <fieldset>
+    <h3>Fill the form given below to get your report.</h3>
+    
+<!-- ['age', 'sex', 'chest_pain_type', 'resting_blood_pressure',
+       'cholesterol', 'fasting_blood_sugar', 'rest_ecg',
+       'max_heart_rate_achieved', 'exercise_induced_angina', 'st_depression',
+       'st_slope', 'num_major_vessels', 'thalassemia', 'target'] -->
+
+<div class="form-group">
+      <label for="age"><h5>Age:</h5></label>
+      <input type="number" min="1" class="form-control"  id="age" name="age" aria-describedby="ageHelp" placeholder="Enter Age">
+      <!-- <small id="mpgHelp" class="form-text text-muted">How far a car is able to travel for every gallon.</small> -->
+    </div>
+
+
+<div class="form-group">
+      <label for="sex"><h5>Sex:</h5></label>
+      <select class="form-control"  id="sex" name="sex">
+        <option>male</option>
+        <option>female</option>
+       
+      </select>
+    </div>
+
+<div class="form-group">
+      <label for="chest_pain_type"><h5>Chest_pain_type:</h5></label>
+      <select class="form-control" id="chest_pain_type" name="chest_pain_type">
+        <option>typical angina</option>
+        <option>atypical angina</option>
+        <option>non-anginal pain</option>
+        <option>asymptomatic</option>
+        
+      </select>
+    </div>
+
+<div class="form-group">
+      <label for="resting_blood_pressure"><h5>Resting_blood_pressure:</h5></label>
+      <input type="number" min="90" max="200" class="form-control" id="resting_blood_pressure" name="resting_blood_pressure" aria-describedby="resting_blood_pressureHelp" placeholder="Enter Resting_blood_pressure">
+      <!-- <small id="resting_blood_pressureHelp" class="form-text text-muted">How far a car is able to travel for every gallon.</small> -->
+    </div>
+
+<div class="form-group">
+      <label for="cholesterol"><h5>Cholesterol:</h5> </label>
+      <input type="number" min="70" max="420" class="form-control" id="cholesterol" name="cholesterol" aria-describedby="cholesterolHelp" placeholder="Enter Cholesterol">
+      <!-- <small id="cholesterolHelp" class="form-text text-muted">How many miles does the car already ranned.</small> -->
+    </div>
+
+<div class="form-group">
+      <label for="fasting_blood_sugar"><h5>Fasting_blood_sugar:</h5></label>
+      <select class="form-control" id="fasting_blood_sugar" name="fasting_blood_sugar" aria-describedby="fasting_blood_sugarHelp">
+        <option>lower than 120mg/ml</option>
+        <option>greater than 120mg/ml</option>
+        
+      </select>
+      <!-- <small id="fasting_blood_sugarHelp" class="form-text text-muted">Size of Engine.</small> -->
+    </div>
+
+<div class="form-group">
+      <label for="rest_ecg"><h5>Rest_ecg:</h5></label>
+      <select class="form-control" id="rest_ecg" name="rest_ecg" aria-describedby="rest_ecgHelp">
+        <option>normal</option>
+        <option>ST-T wave abnormality</option>
+        <option>left ventricular hypertrophy</option>
+      </select>
+      <!-- <small id="rest_ecgHelp" class="form-text text-muted">Size of Engine.</small> -->
+</div>
+
+<div class="form-group">
+      <label for="max_heart_rate_achieved"><h5>Max_heart_rate_achieved:</h5> </label>
+      <input type="number" min="70" max="220" class="form-control" id="max_heart_rate_achieved" name="max_heart_rate_achieved" aria-describedby="max_heart_rate_achievedHelp" placeholder="Enter Max_heart_rate_achieved ">
+      <!-- <small id="max_heart_rate_achievedHelp" class="form-text text-muted">If you don't have any idea specifie as '0'.</small> -->
+    </div>
+
+<div class="form-group">
+      <label for="exercise_induced_angina"><h5>Exercise_induced_angina:</h5></label>
+      <select class="form-control" id="exercise_induced_angina" name="exercise_induced_angina"  aria-describedby="exercise_induced_anginaHelp">
+        <option>no</option>
+        <option>yes</option>
+      </select>
+      <!-- <small id="exercise_induced_anginaHelp" class="form-text text-muted">Buying year of car.</small> -->
+    </div>
+
+<div class="form-group">
+      <label for="st_depression"><h5>St_depression:</h5> </label>
+      <input type="number" min="0" max="10" step="0.1"  class="form-control" id="st_depression" name="st_depression" aria-describedby="st_depressionHelp" placeholder="Enter St_depression ">
+      <!-- <small id="st_depressionHelp" class="form-text text-muted">If you don't have any idea specifie as '0'.</small> -->
+    </div>
+
+<div class="form-group">
+      <label for="st_slope"><h5>St_slope:</h5></label>
+      <select class="form-control" id="st_slope" name="st_slope"  aria-describedby="st_slopeHelp">
+        <option>upsloping</option>
+        <option>flat</option>
+        <option>downsloping</option>
+      </select>
+      <!-- <small id="st_slopeHelp" class="form-text text-muted">Buying year of car.</small> -->
+    </div>
+
+<div class="form-group">
+      <label for="num_major_vessels"><h5>Num_major_vessels:</h5> </label>
+      <input type="number" min="0" max="4"  class="form-control" id="num_major_vessels" name="num_major_vessels" aria-describedby="num_major_vesselsHelp" placeholder="Enter num_major_vessels ">
+      <!-- <small id="num_major_vesselsHelp" class="form-text text-muted">If you don't have any idea specifie as '0'.</small> -->
+    </div>
+
+
+<div class="form-group">
+      <label for="thalassemia"><h5>Thalassemia:</h5></label>
+      <select class="form-control" id="thalassemia" name="thalassemia"  aria-describedby="thalassemiaHelp">
+        <option>normal</option>
+        <option>fixed defect</option>
+        <option>reversable defect</option>
+      </select>
+      <!-- <small id="thalassemiaHelp" class="form-text text-muted">Buying year of car.</small> -->
+    </div>
+
+   <!-- ['age', 'sex', 'chest_pain_type', 'resting_blood_pressure',
+       'cholesterol', 'fasting_blood_sugar', 'rest_ecg',
+       'max_heart_rate_achieved', 'exercise_induced_angina', 'st_depression',
+       'st_slope', 'num_major_vessels', 'thalassemia', 'target'] -->
+
+
+  <button type="submit" class="btn btn-primary">Predict</button>
+
+  </fieldset>
+    </form>
+  </div>
+
+  
+  </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container p-4">
+  <h1>Hey upload the file to get results in bulk. </h1>
+  
+  <div class="row p-2">
+
+   
+    <div class="col-md-6 pt-2">
+    
+      <div class="card text-white bg-primary mb-6" style="max-width: 50rem;">
+        <div class="card-header"> <strong> Your Result</strong> </div>
+        <div class="card-body">
+           <h4> 
+            <strong>
+            {% if result %}  
+              {% if result[1] == 1 %}
+                <span class="fa fa-check-circle"></span> 
+                {{ result[0] }}  </strong>  </h4> 
+                <p> Celebrate its a good news. </p>
+
+              {% elif result[1] == 2 %}
+                <span class="fa fa-exclamation-triangle"></span> 
+                {{ result[0] }}  </strong>  </h4> 
+                <p> To get an idea of what data you need to fill read the informative content given below. </p>
+              {% else %}
+                <span class="fa fa-heartbeat"></span> 
+                {{ result[0] }}  </strong>  </h4> 
+                <p> Get well soon. </p>
+              {% endif %}
+
+            {% else %}
+              Upload the file. <span class="fa fa-hand-o-right"></span>
+                </strong>  </h4> 
+              <p> <span class="fa fa-hand-o-down"></span> Carefully Read Information given below. </p>
+            {% endif %}
+            
+            
+            <a href="HeartDiseaseData1.csv" download> Sample file </a>
+             
+         
+        </div>
+      </div>
+
+      <form class="pt-4"  action="/downloadSample" method="POST" enctype=multipart/form-data>
+        <fieldset>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Download SampleFile</button>
+        </fieldset>
+      </form>
+      {% if data %}
+    <form class="pt-4"  action="/download" method="POST" enctype=multipart/form-data>
+      <fieldset>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Download Reports</button>
+      </fieldset>
+    </form>
+    {% endif %}
+   
+  </div>
+
+  <div class="col-md-6  pt-2">
+
+    <form  action="/bulkReport" method="POST" enctype=multipart/form-data>
+    <fieldset>
+    <h3>Upload the file below to get bulk reports.</h3>
+    
+<!-- ['age', 'sex', 'chest_pain_type', 'resting_blood_pressure',
+       'cholesterol', 'fasting_blood_sugar', 'rest_ecg',
+       'max_heart_rate_achieved', 'exercise_induced_angina', 'st_depression',
+       'st_slope', 'num_major_vessels', 'thalassemia', 'target'] -->
+
+       <div class="form-group">
+        <label for="file"> <h5> Upload the Data File </h5>  </label>
+        <input type="file" class="form-control-file" id="file" name='file' aria-describedby="fileHelp">
+        <small id="fileHelp" class="form-text text-muted">The file format must be CSV or EXL, and the columns in the datafile must be in this order ( ['age', 'sex', 'chest_pain_type', 'resting_blood_pressure',
+          'cholesterol', 'fasting_blood_sugar', 'rest_ecg',
+          'max_heart_rate_achieved', 'exercise_induced_angina', 'st_depression',
+          'st_slope', 'num_major_vessels', 'thalassemia', 'target'] ) .</small>
+      </div>
+
+   <!-- ['age', 'sex', 'chest_pain_type', 'resting_blood_pressure',
+       'cholesterol', 'fasting_blood_sugar', 'rest_ecg',
+       'max_heart_rate_achieved', 'exercise_induced_angina', 'st_depression',
+       'st_slope', 'num_major_vessels', 'thalassemia', 'target'] -->
+
+
+  <button type="submit" class="btn btn-primary">Predict</button>
+
+  </fieldset>
+    </form>
+    
+
+  </div>
+ 
+  </div>
+
+</div>
+
+
+
+
+<div class="container-fluid text-center">
+
+  <hr>
+
+  {% if data %}
+
+  <h3> Your Submitted File Data </h3>
+
+    <table id='tab' class="display table responsive table-hover">
+      <thead>
+        <tr>
+          <th scope="col"> Sr.No </th>
+          {% for i in data[0].columns  %}
+          
+          <th scope="col"> {{ i }} </th>
+          
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in range(data[0].shape[0]) %}
+          
+        <tr class="table">
+          <th scope="row"> {{ i }}  </th>
+          {% for j in data[0].columns  %}
+            <td> {{ data[0].loc[i][j] }} </td>
+                      
+          {% endfor %}
+          
+          
+        </tr>
+         
+        {% endfor %}
+      </tbody>
+    </table> 
+  {% else %}
+
+    <div class="card border-primary mb-3" style="max-width: 100%">
+      <div class="card-header"> Read Me </div>
+      <div class="card-body">
+        <h4 class="card-title"> Information you should know. </h4>
+        <p class="card-text"> Here's what the form data mean, </p>
+        <p> 
+          <li class="list-group-item list-group-item-action"> <strong> Age: </strong>  The person's age in years. </li>
+          <li class="list-group-item list-group-item-action"> <strong> Sex: </strong>  The person's sex (1 = male, 0 = female). </li>
+          <li class="list-group-item list-group-item-action"> <strong> Chest_pain_type: </strong>  The chest pain experienced (Value 1: typical angina, Value 2: atypical angina, Value 3: non-anginal pain, Value 4: asymptomatic). </li>
+          <li class="list-group-item list-group-item-action"> <strong> Resting_blood_pressure: </strong>  The person's resting blood pressure (mm Hg on admission to the hospital). </li>
+          <li class="list-group-item list-group-item-action"> <strong> Cholesterol: </strong>  The person's cholesterol measurement in mg/dl. </li>
+          <li class="list-group-item list-group-item-action"> <strong> Fasting_blood_sugar: </strong>  The person's fasting blood sugar (> 120 mg/dl, 1 = true; 0 = false). </li>
+          <li class="list-group-item list-group-item-action"> <strong> Rest_ecg: </strong>  Resting electrocardiographic measurement (0 = normal, 1 = having ST-T wave abnormality, 2 = showing probable or definite left ventricular hypertrophy by Estes' criteria). </li>
+          <li class="list-group-item list-group-item-action"> <strong> Max_heart_rate_achieved: </strong>  The person's maximum heart rate achieved. </li>
+          <li class="list-group-item list-group-item-action"> <strong> Exercise_induced_angina: </strong>  Exercise induced angina (1 = yes; 0 = no). </li>
+          <li class="list-group-item list-group-item-action"> <strong> St_depression: </strong>  ST depression induced by exercise relative to rest ('ST' relates to positions on the ECG plot. See more here). </li>
+          <li class="list-group-item list-group-item-action"> <strong> St_slope: </strong>  The slope of the peak exercise ST segment (Value 1: upsloping, Value 2: flat, Value 3: downsloping). </li>
+          <li class="list-group-item list-group-item-action"> <strong> Num_major_vessels: </strong>  The number of major vessels (0-4). </li>
+          <li class="list-group-item list-group-item-action"> <strong> Thalassemia: </strong>  A blood disorder called thalassemia (normal; fixed defect; reversable defect). </li>
+        </p>
+      </div>
+    </div>
+
+  {% endif %}
+
+</div>
+<script type="text/javascript">
+  $('#tab').DataTable();
+</script>
+{% endblock %}

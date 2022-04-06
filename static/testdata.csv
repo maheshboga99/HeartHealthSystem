@@ -1,0 +1,4 @@
+age,sex,chest_pain_type,resting_blood_pressure,cholesterol,fasting_blood_sugar,rest_ecg,max_heart_rate_achieved,exercise_induced_angina,st_depression,st_slope,num_major_vessels,thalassemia
+54,female,non-anginal pain,135,304,greater than 120mg/ml,ST-T wave abnormality,170,no,0.0,downsloping,0,fixed defect
+60,male,typical angina,130,206,lower than 120mg/ml,normal,132,yes,2.4,flat,2,reversable defect
+43,male,non-anginal pain,130,315,lower than 120mg/ml,ST-T wave abnormality,162,no,1.9,downsloping,1,fixed defect
